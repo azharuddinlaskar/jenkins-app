@@ -5,7 +5,7 @@ import (
 	"math/rand"
 )
 
-func main() {
+func matrix() [][]int{
 	var matrix = make([][]int, 10)
 	for i := range matrix {
 		matrix[i] = make([]int, 10)
@@ -14,7 +14,10 @@ func main() {
 		}
 	}
 
-	for i := range matrix {
-		fmt.Println(matrix[i])
-	}
+	return matrix
+}
+
+func main(){
+	m := matrix()
+	fmt.Println(m)
 }
