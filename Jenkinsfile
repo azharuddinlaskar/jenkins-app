@@ -1,21 +1,22 @@
 pipeline {
     agent { docker { image 'golang:latest' } }
     stages {
-        stage('Build') {
-            steps {
-                sh "pwd"
-                sh "ls -l"
-                sh "go version"
-            }
-        }
+        
         stage('Test') {
             steps {
-                sh "pwd"
+                echo "Testing..."
+                sh "go build -o matrix"
+            }
+        }
+        stage('Build') {
+            steps {
+                echo "Building..."
+                sh "go build -o matrix"
             }
         }
         stage('Deploy') {
             steps {
-                sh "pwd"
+                echo "Deploying"
             }
         }
     }
