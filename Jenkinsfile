@@ -11,7 +11,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo "Building..."
-                sh "go build -o matrix"
+                sh "go test ./"
             }
         }
         stage('Deploy') {
