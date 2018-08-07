@@ -1,5 +1,10 @@
 pipeline {
-    agent { docker { image 'golang:latest' } }
+    agent {
+    	docker {
+    		image 'golang:latest'
+    		args '-e "GOCACHE=/tmp/gocache"'
+    		}
+    	}
     stages {
         
         stage('Test') {
