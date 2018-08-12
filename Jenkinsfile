@@ -16,13 +16,14 @@ pipeline {
         }
         stage('SonarQube Analysis') {
         	steps {
-        		node('LOCAL')
-        		script {
-        			scannerHome = tool 'GO_SONAR_SCANNER';
-        		}
+        		node('LOCAL'){
+		    		script {
+		    			scannerHome = tool 'GO_SONAR_SCANNER';
+		    		}
 
-				withSonarQubeEnv('SONARQUBE-1') {
-				  sh "${scannerHome}/bin/sonar-scanner"
+					withSonarQubeEnv('SONARQUBE-1') {
+					  sh "${scannerHome}/bin/sonar-scanner"
+					}
 				}
         	}
         }
