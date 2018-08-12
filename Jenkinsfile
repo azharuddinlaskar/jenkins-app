@@ -1,27 +1,36 @@
 pipeline {
-    agent {
-    	docker {
-    		image 'golang:latest'
-    		args '-e "GOCACHE=/tmp/gocache"'
-    		}
-    	}
+	agent none
+	
     stages {
-        
-        stage('Test') {
+    	stage('Test') {
+    		agent {
+				docker {
+					image 'golang:latest'
+					args '-e "GOCACHE=/tmp/gocache"'
+					}
+				}
             steps {
                 echo "Testing..."
-                sh "go build -o matrix"
-            }
-        }
-        stage('Build') {
-            steps {
-                echo "Building..."
                 sh "go test ./"
             }
         }
-        stage('Deploy') {
+        stage('SonarQube Analysis') {
+        	def scannerHome = tool 'SonarQube Scanner 2.8';
+        	withSonarQubeEnv('SONARQUBE-1') {
+				sh "${scannerHome}/bin/sonar-scanner"
+			}
+        }
+        stage('Build') {
+    		agent {
+				docker {
+					image 'golang:latest'
+					args '-e "GOCACHE=/tmp/gocache"'
+					}
+				}
             steps {
-                echo "Deploying"
+                echo "Building..."
+                checkout scm
+                sh "go build -o matrix"
             }
         }
     }
