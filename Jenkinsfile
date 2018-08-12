@@ -15,14 +15,15 @@ pipeline {
             }
         }
         stage('SonarQube Analysis') {
-        	steps {
-        		script {
-        			def scannerHome = tool 'SonarQube Scanner 2.8';
-					withSonarQubeEnv('SONARQUBE-1') {
-						sh "${scannerHome}/bin/sonar-scanner"
-					}
-        		}
-        	}
+        	node {
+			  checkout scm
+			  stage('SonarQube analysis') {
+				def scannerHome = tool 'SonarQube Scanner 2.8';
+				withSonarQubeEnv('My SonarQube Server') {
+				  sh "${scannerHome}/bin/sonar-scanner"
+				}
+			  }
+			}
         }
         stage('Build') {
     		agent {
