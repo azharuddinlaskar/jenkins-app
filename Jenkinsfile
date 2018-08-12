@@ -17,7 +17,7 @@ pipeline {
         stage('SonarQube Analysis') {
         	steps {
         		script {
-        			scannerHome = tool 'SonarQube Scanner 2.8';
+        			scannerHome = tool 'GO_SONAR_SCANNER';
         		}
 
 				withSonarQubeEnv('SONARQUBE-1') {
