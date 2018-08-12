@@ -16,6 +16,7 @@ pipeline {
         }
         stage('SonarQube Analysis') {
         	steps {
+        		agents any
         		script {
         			scannerHome = tool 'GO_SONAR_SCANNER';
         		}
