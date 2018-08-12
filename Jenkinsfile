@@ -15,15 +15,12 @@ pipeline {
             }
         }
         stage('SonarQube Analysis') {
-        	node {
-			  checkout scm
-			  stage('SonarQube analysis') {
-				def scannerHome = tool 'SonarQube Scanner 2.8';
+        	steps {
+        		def scannerHome = tool 'SonarQube Scanner 2.8';
 				withSonarQubeEnv('My SonarQube Server') {
 				  sh "${scannerHome}/bin/sonar-scanner"
 				}
-			  }
-			}
+        	}
         }
         stage('Build') {
     		agent {
