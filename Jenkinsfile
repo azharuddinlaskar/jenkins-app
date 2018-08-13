@@ -1,14 +1,11 @@
 node('master') {
     docker.withServer('unix:///var/run/docker.sock') {
         stage('Code Checkout') {
-            
-        }
-        stage('Code Checkout') {
             docker
                 .image('golang:latest')
                 .inside('--volumes-from jenkins-ci') {
                     sh """
-                        git 'https://github.com/azharuddinlaskar/jenkins-app.git'
+                        git clone 'https://github.com/azharuddinlaskar/jenkins-app.git'
                     """
                 }
         }
