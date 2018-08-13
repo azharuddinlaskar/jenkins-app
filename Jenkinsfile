@@ -6,7 +6,7 @@ node('master') {
         stage('Code Checkout') {
             docker
                 .image('golang:latest')
-                .inside('--volumes-from jenkins-master') {
+                .inside('--volumes-from jenkins') {
                     sh """
                         git 'https://github.com/azharuddinlaskar/jenkins-app.git'
                     """
@@ -15,7 +15,7 @@ node('master') {
         stage('Unit Test') {
             docker
                 .image('golang:latest')
-                .inside('--volumes-from jenkins-master') {
+                .inside('--volumes-from jenkins') {
                     sh """
                         go test ./
                     """
@@ -24,7 +24,7 @@ node('master') {
         stage('SonarQube Analysis') {
             docker
                 .image('sonarqube-sonarscanner')
-                .inside('--volumes-from jenkins-master') {
+                .inside('--volumes-from jenkins') {
                     sh """
                         sonar-scanner
                     """
@@ -33,7 +33,7 @@ node('master') {
         stage('Build') {
             docker
                 .image('golang:latest')
-                .inside('--volumes-from jenkins-master') {
+                .inside('--volumes-from jenkins') {
                     echo "Deployinh"
                 }
         }
