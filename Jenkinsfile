@@ -4,9 +4,7 @@ node('master') {
             docker
                 .image('golang:latest')
                 .inside('--volumes-from jenkins-ci') {
-                    sh """
-                        git clone 'https://github.com/azharuddinlaskar/jenkins-app.git .'
-                    """
+                    checkout scm
                 }
         }
         stage('Unit Test') {
