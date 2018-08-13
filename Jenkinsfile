@@ -1,44 +1,41 @@
-pipeline {
-	agent none
-	
-    stages {
-    	stage('Test') {
-    		agent {
-				docker {
-					image 'golang:latest'
-					args '-e "GOCACHE=/tmp/gocache"'
-					}
-				}
-            steps {
-                echo "Testing..."
-                sh "go test ./"
-            }
+node('master') {
+    docker.withServer('unix:///var/run/docker.sock') {
+        stage('Code Checkout') {
+            
+        }
+        stage('Code Checkout') {
+            docker
+                .image('golang:latest')
+                .inside('--volumes-from jenkins-master') {
+                    sh """
+                        git 'https://github.com/azharuddinlaskar/jenkins-app.git'
+                    """
+                }
+        }
+        stage('Unit Test') {
+            docker
+                .image('golang:latest')
+                .inside('--volumes-from jenkins-master') {
+                    sh """
+                        go test ./
+                    """
+                }
         }
         stage('SonarQube Analysis') {
-        	steps {
-        		node('LOCAL'){
-		    		script {
-		    			scannerHome = tool 'GO_SONAR_SCANNER';
-		    		}
-
-					withSonarQubeEnv('SONARQUBE-1') {
-					  sh "${scannerHome}/bin/sonar-scanner"
-					}
-				}
-        	}
+            docker
+                .image('sonarqube-sonarscanner')
+                .inside('--volumes-from jenkins-master') {
+                    sh """
+                        sonar-scanner
+                    """
+                }
         }
         stage('Build') {
-    		agent {
-				docker {
-					image 'golang:latest'
-					args '-e "GOCACHE=/tmp/gocache"'
-					}
-				}
-            steps {
-                echo "Building..."
-                checkout scm
-                sh "go build -o matrix"
-            }
+            docker
+                .image('golang:latest')
+                .inside('--volumes-from jenkins-master') {
+                    echo "Deployinh"
+                }
         }
     }
 }
