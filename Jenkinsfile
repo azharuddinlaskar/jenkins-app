@@ -5,7 +5,7 @@ node('master') {
                 .image('golang:latest')
                 .inside('--volumes-from jenkins-ci') {
                     sh """
-                        git clone 'https://github.com/azharuddinlaskar/jenkins-app.git'
+                        git clone 'https://github.com/azharuddinlaskar/jenkins-app.git .'
                     """
                 }
         }
