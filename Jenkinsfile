@@ -19,7 +19,7 @@ node('master') {
         stage('SonarQube Analysis') {
             docker
                 .image('sonarscanner')
-                .inside('--volumes-from jenkins-ci') {
+                .inside('--volumes-from jenkins-ci --link sonarqube') {
                     sh """
                         sonar-scanner
                     """
@@ -28,7 +28,7 @@ node('master') {
         stage('Build') {
             docker
                 .image('golang:latest')
-                .inside('--volumes-from jenkins-ci --link sonarqube') {
+                .inside('--volumes-from jenkins-ci') {
                     echo "Deployinh"
                 }
         }
