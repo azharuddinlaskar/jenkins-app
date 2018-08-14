@@ -28,7 +28,7 @@ node('master') {
         stage('Build') {
             docker
                 .image('golang:latest')
-                .inside('--volumes-from jenkins-ci') {
+                .inside('--volumes-from jenkins-ci --link sonarqube') {
                     echo "Deployinh"
                 }
         }
