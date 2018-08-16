@@ -18,7 +18,7 @@ node('master') {
         }
         stage('SonarQube Analysis') {
             docker
-                .image('sonarscanner')
+                .image('azharuddinlaskar/sonarscanner')
                 .inside('--volumes-from jenkins-ci --link sonarqube --net development_pipeline_go_default') {
                     sh """
                         sonar-scanner
